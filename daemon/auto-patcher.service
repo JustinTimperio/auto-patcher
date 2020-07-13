@@ -1,0 +1,6 @@
+[Unit]
+Description=Runs The Main Auto-Patcher Script
+
+[Service]
+Type=oneshot
+ExecStart='/usr/bin/bash /opt/auto-patcher/auto-patcher.sh'

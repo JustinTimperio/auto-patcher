@@ -1,0 +1,9 @@
+[Unit]
+Description=Trigger Auto-Patcher Service
+
+[Timer]
+Unit=auto-patcher.service
+OnUnitActiveSec=1w
+
+[Install]
+WantedBy=multi-user.target
