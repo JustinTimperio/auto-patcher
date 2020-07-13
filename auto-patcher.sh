@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Set Main Vars
-source = config
+source config.sh
 osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 
 # Start Logging 
@@ -12,12 +12,12 @@ echo [$(date +%T)] Started Auto-Patcher... >> $logfile
 # Run Upgrades Per OS and Report Reboot Status
 
 ## DEBIAN
-if [$osname == 'ubuntu' -o $osname == 'debian']; then
+if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
   ### Update System
   apt update --yes >> $logfile
   apt upgrade --yes >> $logfile
   
-  if [$cleanup == 'true']; then
+  if [[ $cleanup == 'true' ]]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $logfile 
     apt clean --yes >> $logfile
@@ -36,11 +36,11 @@ if [$osname == 'ubuntu' -o $osname == 'debian']; then
   fi
 
 ## CENTOS
-elif [$osname == 'centos']; then
+elif [[ $osname == 'centos' ]]; then
   ### Update and Upgrade System
   yum -y upgrade >> $logfile
   
-  if [$cleanup == 'true']; then
+  if [[ $cleanup == 'true' ]]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $logfile 
     yum -y autoremove >> $logfile 
@@ -59,16 +59,16 @@ elif [$osname == 'centos']; then
   fi
 
 ## ARCH
-elif [$osname == 'arch']; then
+elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
   ### Update and Upgrade System
   pacman -Syu --noconfirm >> $logfile
   
   ### Clean Orphans
-  if [$cleanup == 'true']; then
+  if [[ $cleanup == 'true' ]]; then
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $logfile 
     pacman -Rns $(pacman -Qtdq) --noconfirm >> $logfile
   else
-    echo [$(date +%T)] The System Does Not Require a Reboot. >> $logfile 
+    echo [$(date +%T)] Package Cleanup Is Disabled By config.sh! >> $logfile
   fi
 
   ### Checks Kernel Versions in /boot
@@ -103,14 +103,14 @@ fi
 
 
 # Decide If Reboot Should Be Scheduled
-if [$disable_reboot == 'true']; then
+if [[ $disable_reboot == 'true' ]]; then
   echo [$(date +%T)] Reboot Has Been Disabled By config.sh! >> $logfile
 
-elif [$force_reboot == 'true']; then
+elif [[ $force_reboot == 'true' ]]; then
   echo [$(date +%T)] Reboot is Being Forced By config.sh! >> $logfile
   shutdown -r $reboot_time >> $logfile
 
-elif [$reboot_needed == 'true']; then
+elif [[ $reboot_needed == 'true' ]]; then
   echo [$(date +%T)] Reboot is Required and Will Be Scheduled At $reboot_time >> $logfile
   shutdown -r $reboot_time >> $logfile
 fi

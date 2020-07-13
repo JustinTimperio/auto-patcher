@@ -18,5 +18,5 @@ disable_reboot='false'
 ## Schedules A Reboot One Min After Script Finishes
 reboot_time=$(date --date='1 minute' +%H:%M)
 ## Can Also Be Set To a Spesific Time
-#reboot_time='12:00'
+#reboot_time='00:00'
 
