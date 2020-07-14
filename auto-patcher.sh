@@ -9,6 +9,16 @@ echo \n---------- $(date) ---------- >> $logfile
 echo [$(date +%T)] Started Auto-Patcher... >> $logfile
 
 
+# Check If a Pre-Transaction Script is Defined
+if [ -n "$pre_transaction" ]; then 
+  echo [$(date +%T)] Started Running Custom Pre-Transaction Script. >> $logfile 
+  $pre_transaction
+  echo [$(date +%T)] Finished Running Custom Pre-Transaction Script. >> $logfile 
+else 
+  echo [$(date +%T)] No Pre-Transaction Command Defined. >> $logfile 
+fi
+
+
 # Run Upgrades Per OS and Report Reboot Status
 
 ## DEBIAN
@@ -99,6 +109,16 @@ elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
 else
   echo [$(date +%T)] $osname Is Not Supported! >> $logfile
   $reboot_needed='false'
+fi
+
+
+# Check If a Post-Transaction Script is Defined
+if [ -n "$post_transaction" ]; then 
+  echo [$(date +%T)] Started Running Custom Post-Transaction Script. >> $logfile 
+  $post_transaction
+  echo [$(date +%T)] Finished Running Custom Post-Transaction Script. >> $logfile 
+else 
+  echo [$(date +%T)] No Post-Transaction Command Defined. >> $logfile 
 fi
 
 

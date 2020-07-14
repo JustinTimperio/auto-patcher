@@ -7,6 +7,14 @@ logfile='/var/log/auto-patcher.log'
 # Can be 'true' or 'false'
 cleanup='true'
 
+## Run A Custom Pre-Transaction Script
+# Can be set to a $(command-here)
+pre_transaction=''
+
+## Run A Custom Post-Transaction Script
+# Can be set to $(command-here)
+post_transaction=''
+
 ## Forces a Reboot on Each Run
 # Can be 'true' or 'false'
 force_reboot='false'
