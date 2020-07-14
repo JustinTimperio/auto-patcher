@@ -5,7 +5,7 @@ source config.sh
 osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 
 # Start Logging 
-echo ---------- $(date) ---------- >> $logfile
+echo \n---------- $(date) ---------- >> $logfile
 echo [$(date +%T)] Started Auto-Patcher... >> $logfile
 
 
@@ -36,7 +36,7 @@ if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
   fi
 
 ## CENTOS
-elif [[ $osname == 'centos' ]]; then
+elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
   ### Update and Upgrade System
   yum -y upgrade >> $logfile
   
