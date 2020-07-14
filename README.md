@@ -21,7 +21,7 @@ Can be set to `'true'` or `'false'`:\
 Trigger an event before auto-patcher runs any upgrades or maintenance.
 
 Run a custom script:\
-`pre_transaction='./home/user/custom.sh'`
+`pre_transaction='$(./home/user/custom.sh')`
 
 Run a command directly:\
 `pre_transaction=$(systemctl stop someunit.service anotherunit.service)`
@@ -30,7 +30,7 @@ Run a command directly:\
 Trigger an event after auto-patcher runs an upgrade but before a reboot is scheduled.
 
 Run a custom script:\
-`post_transaction='./home/user/custom.sh'`
+`post_transaction='$(./home/user/custom.sh')`
 
 Run a command directly:\
 `post_transaction=$(systemctl start someunit.service anotherunit.service)`
