@@ -9,7 +9,17 @@ A shell script and systemd service that automatically runs package upgrades, cle
 - Arch
 - Manjaro
 
-## Using config.sh Options
+------------
+
+## Install Auto-Patcher
+`curl https://github.com/JustinTimperio/auto-patcher/blob/master/install.sh | sudo bash`
+
+## Uninstall Auto-Patcher
+`sudo /opt/auto-patcher/remove.sh`
+
+------------
+
+## Using /etc/auto-patcher/config
 
 ### $cleanup
 Cleans orhpaned packages and old cached package versions.
