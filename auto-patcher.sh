@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Set Main Vars
-source /etc/autopatcher/config
+source /etc/auto-patcher/config
 osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 
 # Start Logging 
