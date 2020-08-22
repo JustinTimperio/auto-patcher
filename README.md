@@ -12,7 +12,7 @@ A shell script and systemd service that automatically runs package upgrades, cle
 ------------
 
 ### Install Auto-Patcher
-`hh`
+`curl https://raw.githubusercontent.com/JustinTimperio/auto-patcher/master/install.sh | sudo bash`
 
 ### Uninstall Auto-Patcher
 `sudo /opt/auto-patcher/remove.sh`

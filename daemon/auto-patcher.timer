@@ -3,7 +3,7 @@ Description=Trigger Auto-Patcher Service
 
 [Timer]
 Unit=auto-patcher.service
-OnUnitActiveSec=1w
+OnCalendar=weekly
 
 [Install]
 WantedBy=multi-user.target

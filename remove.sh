@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Remove Core Files and Dirs
-rm /opt/auto-patcher
-rm /etc/auto-patcher
+rm -R /opt/auto-patcher
+rm -R /etc/auto-patcher
 
 # Disable and Remove Service Unit
+systemctl stop auto-patcher.timer
 systemctl disable auto-patcher.timer
 rm /usr/lib/systemd/system/auto-patcher.service
 rm /usr/lib/systemd/system/auto-patcher.timer
