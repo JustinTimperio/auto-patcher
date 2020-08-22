@@ -11,10 +11,10 @@ A shell script and systemd service that automatically runs package upgrades, cle
 
 ------------
 
-## Install Auto-Patcher
+### Install Auto-Patcher
 `curl https://github.com/JustinTimperio/auto-patcher/blob/master/install.sh | sudo bash`
 
-## Uninstall Auto-Patcher
+### Uninstall Auto-Patcher
 `sudo /opt/auto-patcher/remove.sh`
 
 ------------
