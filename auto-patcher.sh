@@ -44,10 +44,10 @@ if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
   ### Check if System Needs to Be Rebooted
   if [ -f /var/run/reboot-required ]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
-    $reboot_needed='true'
+    reboot_needed='true'
   else
     echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
-    $reboot_needed='false'
+    reboot_needed='false'
   fi
 
 ## CENTOS
@@ -67,10 +67,10 @@ elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
   ### Check if System Needs to Be Rebooted
   if [$(needs-restarting  -r ; echo $?) == 0]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
-    $reboot_needed='true'
+    reboot_needed='true'
   else
     echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
-    $reboot_needed='false'
+    reboot_needed='false'
   fi
 
 ## ARCH
@@ -94,10 +94,11 @@ elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
   ### Compares Running Kernel Against Installed Kernel
   if [[ INSTALLED_KERNEL != RUNNING_KERNEL ]]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
-    $reboot_needed='true'
+    echo [$(date +%T)] Kernel Changed From $RUNNING_KERNEL to $INSTALLED_KERNEL! >> $log 
+    reboot_needed='true'
   else 
     echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
-    $reboot_needed='false'
+    reboot_needed='false'
   fi
 
 ## NOT SUPPORTED

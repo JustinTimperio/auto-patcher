@@ -21,7 +21,7 @@ force_reboot='false'
 
 ## Disables Reboots Even If They Are Needed
 # Can be 'true' or 'false'
-disable_reboot='false'
+disable_reboot='true'
 
 ## Schedules A Reboot One Min After Script Finishes
 reboot_time=$(date --date='1 minute' +%H:%M)
