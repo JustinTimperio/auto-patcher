@@ -5,7 +5,8 @@ source /etc/auto-patcher/config
 osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 
 # Start Logging 
-echo \n---------- $(date) ---------- >> $log
+echo '' >> $log
+echo ---------- $(date) ---------- >> $log
 echo [$(date +%T)] Started Auto-Patcher... >> $log
 
 
@@ -38,7 +39,7 @@ if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
     apt clean --yes >> $log
     apt autoremove --yes >> $log 
   else
-    echo [$(date +%T)] Package Cleanup Is Disabled By config.sh! >> $log
+    echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
 
   ### Check if System Needs to Be Rebooted
@@ -61,7 +62,7 @@ elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
     yum -y autoremove >> $log 
     yum -y clean all >> $log
   else
-    echo [$(date +%T)] Package Cleanup Is Disabled By config.sh! >> $log
+    echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
 
   ### Check if System Needs to Be Rebooted
@@ -83,7 +84,7 @@ elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
     pacman -Rns $(pacman -Qtdq) --noconfirm >> $log
   else
-    echo [$(date +%T)] Package Cleanup Is Disabled By config.sh! >> $log
+    echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
 
   ### Checks Kernel Version in /boot
@@ -126,10 +127,10 @@ fi
 #######################################
 
 if [[ $disable_reboot == 'true' ]]; then
-  echo [$(date +%T)] Reboot Has Been Disabled By config.sh! >> $log
+  echo [$(date +%T)] Reboot Has Been Disabled By /etc/auto-patcher/config! >> $log
 
 elif [[ $force_reboot == 'true' ]]; then
-  echo [$(date +%T)] Reboot is Being Forced By config.sh! >> $log
+  echo [$(date +%T)] Reboot is Being Forced By /etc/auto-patcher/config! >> $log
   shutdown -r $reboot_time >> $log
 
 elif [[ $reboot_needed == 'true' ]]; then
