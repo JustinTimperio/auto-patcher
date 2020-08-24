@@ -8,8 +8,9 @@ mkdir -p /etc/auto-patcher
 cp /opt/auto-patcher/config /etc/auto-patcher/config
 
 # Add Service Unit Files
-cp /opt/auto-patcher/daemon/auto-patcher.service /usr/lib/systemd/user/auto-patcher.service
-cp /opt/auto-patcher/daemon/auto-patcher.timer /usr/lib/systemd/user/auto-patcher.timer
+mkdir -p /usr/lib/systemd/system
+cp /opt/auto-patcher/daemon/auto-patcher.service /usr/lib/systemd/system/auto-patcher.service
+cp /opt/auto-patcher/daemon/auto-patcher.timer /usr/lib/systemd/system/auto-patcher.timer
 
 # Enable Service Unit
 systemctl daemon-reload
