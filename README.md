@@ -23,13 +23,13 @@ A shell script and systemd service that automatically runs package upgrades, cle
 
 ## Using /etc/auto-patcher/config
 
-### $cleanup
+### Cleanup
 Cleans orhpaned packages and old cached package versions.
 
 Can be set to `'true'` or `'false'`:\
 `cleanup='true'`
 
-### $pre_transaction
+### Pre_Transaction
 Trigger an event before auto-patcher runs any upgrades or maintenance.
 
 Run a custom script:\
@@ -38,7 +38,7 @@ Run a custom script:\
 Run a command directly:\
 `pre_transaction=$(systemctl stop someunit.service anotherunit.service)`
 
-### $post_transaction
+### Post_Transaction
 Trigger an event after auto-patcher runs an upgrade but before a reboot is scheduled.
 
 Run a custom script:\
@@ -47,19 +47,19 @@ Run a custom script:\
 Run a command directly:\
 `post_transaction=$(systemctl start someunit.service anotherunit.service)`
 
-### $force_reboot
+### Force_Reboot
 This forces the system to schedule a reboot after every script completion.
 
 Can be set to `'true'` or `'false'`:\
 `force_reboot='false'`
 
-### $disable_reboot
+### Disable_Reboot
 Disables reboots even if they are needed.
 
 Can be set to `'true'` or `'false'`:\
 `disable_reboot='false'`
 
-### $reboot_time 
+### Reboot_Time 
 Reboot_time sets when a reboot will be scheduled if it is needed. By default a reboot will only be scheduled if the kernel has be upgraded, or if a running service unit requires a reboot to take effect.
 
 Schedules a reboot one minute after completion:\
