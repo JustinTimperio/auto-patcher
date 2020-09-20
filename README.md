@@ -1,4 +1,6 @@
 # Generic Auto-Patcher
+![Codacy grade](https://img.shields.io/codacy/grade/ea8a661eab1f4f64960491c1f0dc6836?label=Codacy%20Grade&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/justintimperio/auto-patcher?style=for-the-badge)\
 A shell script and systemd service that automatically runs package upgrades, cleans orphaned and cached packages, schedules system reboots, and integrates custom pre and post transaction scripts.
 
 ## Supported Distro's
