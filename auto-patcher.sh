@@ -14,6 +14,7 @@ echo [$(date +%T)] Started Auto-Patcher... >> $log
 # Check If a Pre-Transaction Script is Defined
 ###############################################
 
+
 if [ -n "$pre_transaction" ]; then 
   echo [$(date +%T)] Started Running Custom Pre-Transaction Script. >> $log 
   $pre_transaction
@@ -26,6 +27,7 @@ fi
 #################################################
 # Run Upgrades Per OS and Report Reboot Status
 ###############################################
+
 
 ## DEBIAN
 if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
@@ -51,7 +53,8 @@ if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
     reboot_needed='false'
   fi
 
-## CENTOS
+
+## RHL
 elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
   ### Update and Upgrade System
   yum -y upgrade >> $log
@@ -67,12 +70,39 @@ elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
 
   ### Check if System Needs to Be Rebooted
   if [$(needs-restarting  -r ; echo $?) == 0]; then
+    echo [$(date +%T)] The System Needs to Be Rebooted! >> $log
+    reboot_needed='true'
+  else
+    echo [$(date +%T)] The System Does Not Require a Reboot. >> $log
+    reboot_needed='false'
+  fi
+
+
+## OpenSUSE
+elif [[ $osname == 'opensuse-leap' ]] || [[ $osname == 'opensuse-tumbleweed' ]]; then
+  ### Update and Upgrade System
+  zypper -n refresh  >> $log
+  zypper -n update >> $log
+  
+  if [[ $cleanup == 'true' ]]; then
+    ### Cleanup
+    echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log
+    zypper -n cc -a >> $log
+  else
+    echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
+  fi
+
+  ### Check if System Needs to Be Rebooted
+  zyp_report=$(zypper ps -s | grep -o)
+  
+  if [[ $zyp_report == 'Reboot is required' ]]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
     reboot_needed='true'
   else
     echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
     reboot_needed='false'
   fi
+
 
 ## ARCH
 elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
@@ -101,6 +131,7 @@ elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
     echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
     reboot_needed='false'
   fi
+
 
 ## NOT SUPPORTED
 else

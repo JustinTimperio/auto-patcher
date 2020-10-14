@@ -8,6 +8,8 @@ A shell script and systemd service that automatically runs package upgrades, cle
 - Ubuntu
 - Centos
 - Fedora
+- OpenSUSE Leap
+- OpenSUSE Tumbleweed
 - Arch
 - Manjaro
 
