@@ -34,6 +34,8 @@ else
   osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 fi
 
+echo [$(date +%T)] Detected the Operating System: $osname >> $log 
+
 
 #############################
 ## DEBIAN
