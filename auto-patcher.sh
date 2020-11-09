@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 # Set Main Vars
-source /etc/auto-patcher/config
+. /etc/auto-patcher/config
 
 # Start Logging 
 echo '' >> $log
@@ -211,7 +211,7 @@ elif [ "$force_reboot" = 'true' ]; then
 
 elif [ "$reboot_needed" = 'true' ]; then
   echo [$(date +%T)] Reboot is Required and Will Be Scheduled At $reboot_time >> $log
-  shutdown -r $reboot_time >> $log
+  shutdown -r +$reboot_offset "Auto-Patcher Has Scheduled a Reboot After a System Upgrade" >> $log
 fi
 
 
