@@ -5,7 +5,10 @@
 
 # Start Logging 
 echo '' >> $log
-echo ---------- $(date) ---------- >> $log
+echo '' >> $log
+echo '================================================='>> $log
+echo "-          $(date)         -" >> $log
+echo '================================================='>> $log
 echo [$(date +%T)] Started Auto-Patcher... >> $log
 
 
@@ -42,14 +45,18 @@ echo [$(date +%T)] Detected the Operating System: $osname >> $log
 #############################
 if [ "$osname" = 'ubuntu' ] || [ "$osname" = 'debian' ]; then
   ### Update System
+  echo '' >> $log 
   apt update --yes >> $log
   apt upgrade --yes >> $log
+  echo '' >> $log 
   
   if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
+    echo '' >> $log 
     apt clean --yes >> $log
     apt autoremove --yes >> $log 
+    echo '' >> $log 
   else
     echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
@@ -67,15 +74,18 @@ if [ "$osname" = 'ubuntu' ] || [ "$osname" = 'debian' ]; then
 #############################
 ## RHL
 #############################
-elif [ "$osname" = 'centos'] || [ "$osname" = 'fedora' ]; then
+elif [ "$osname" = 'centos' ] || [ "$osname" = 'fedora' ]; then
   ### Update and Upgrade System
+  echo '' >> $log 
   yum -y upgrade >> $log
   
   if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
+    echo '' >> $log 
     yum -y autoremove >> $log 
     yum -y clean all >> $log
+    echo '' >> $log 
   else
     echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
@@ -95,13 +105,17 @@ elif [ "$osname" = 'centos'] || [ "$osname" = 'fedora' ]; then
 #############################
 elif [ "$osname" = 'opensuse-leap' ] || [ "$osname" = 'opensuse-tumbleweed' ]; then
   ### Update and Upgrade System
+  echo '' >> $log 
   zypper -n refresh  >> $log
   zypper -n update >> $log
+  echo '' >> $log 
   
   if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log
+    echo '' >> $log 
     zypper -n cc -a >> $log
+    echo '' >> $log 
   else
     echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
@@ -122,12 +136,16 @@ elif [ "$osname" = 'opensuse-leap' ] || [ "$osname" = 'opensuse-tumbleweed' ]; t
 #############################
 elif [ "$osname" = 'arch' ] || [ "$osname" = 'manjaro' ]; then
   ### Update and Upgrade System
+  echo '' >> $log 
   pacman -Syu --noconfirm >> $log
+  echo '' >> $log 
   
   ### Clean Orphans
   if [ "$cleanup" = 'true' ]; then
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
+    echo '' >> $log 
     pacman -Rns $(pacman -Qtdq) --noconfirm >> $log
+    echo '' >> $log 
   else
     echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
@@ -153,12 +171,16 @@ elif [ "$osname" = 'arch' ] || [ "$osname" = 'manjaro' ]; then
 #############################
 elif [ "$osname" = 'freebsd' ]; then
   ### Update and Upgrade System
+  echo '' >> $log 
   yes | pkg upgrade >> $log
+  echo '' >> $log 
   
   ### Clean Orphans
   if [ "$cleanup" = 'true' ]; then
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
+    echo '' >> $log 
     yes | pkg autoremove >> $log
+    echo '' >> $log 
   else
     echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
   fi
