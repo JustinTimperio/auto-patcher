@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
+#! /usr/bin/env sh
 
 # Set Main Vars
 source /etc/auto-patcher/config
-osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
 
 # Start Logging 
 echo '' >> $log
@@ -29,13 +28,20 @@ fi
 ###############################################
 
 
+if [ "$(uname)" = 'FreeBSD' ]; then
+  osname="freebsd"
+else
+  osname=$(cat /etc/*release | grep -Pi '^ID=' | head -1 | cut -c4- | sed -e 's/^"//' -e 's/"$//')
+fi
+
+
 ## DEBIAN
-if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
+if [ "$osname" = 'ubuntu' -o 'debian' ]; then
   ### Update System
   apt update --yes >> $log
   apt upgrade --yes >> $log
   
-  if [[ $cleanup == 'true' ]]; then
+  if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
     apt clean --yes >> $log
@@ -55,11 +61,11 @@ if [[ $osname == 'ubuntu' ]] || [[ $osname == 'debian' ]]; then
 
 
 ## RHL
-elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
+elif [ "$osname" = 'centos' -o 'fedora' ]; then
   ### Update and Upgrade System
   yum -y upgrade >> $log
   
-  if [[ $cleanup == 'true' ]]; then
+  if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
     yum -y autoremove >> $log 
@@ -69,7 +75,7 @@ elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
   fi
 
   ### Check if System Needs to Be Rebooted
-  if [$(needs-restarting  -r ; echo $?) == 0]; then
+  if [ $(needs-restarting  -r ; echo $?) = 0 ]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log
     reboot_needed='true'
   else
@@ -79,12 +85,12 @@ elif [[ $osname == 'centos' ]] || [[ $osname == 'fedora' ]]; then
 
 
 ## OpenSUSE
-elif [[ $osname == 'opensuse-leap' ]] || [[ $osname == 'opensuse-tumbleweed' ]]; then
+elif [ "$osname" = 'opensuse-leap' -o 'opensuse-tumbleweed' ]; then
   ### Update and Upgrade System
   zypper -n refresh  >> $log
   zypper -n update >> $log
   
-  if [[ $cleanup == 'true' ]]; then
+  if [ "$cleanup" = 'true' ]; then
     ### Cleanup
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log
     zypper -n cc -a >> $log
@@ -95,7 +101,7 @@ elif [[ $osname == 'opensuse-leap' ]] || [[ $osname == 'opensuse-tumbleweed' ]];
   ### Check if System Needs to Be Rebooted
   zyp_report=$(zypper ps -s | grep -o)
   
-  if [[ $zyp_report == 'Reboot is required' ]]; then
+  if [ "$zyp_report" = 'Reboot is required' ]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
     reboot_needed='true'
   else
@@ -105,12 +111,12 @@ elif [[ $osname == 'opensuse-leap' ]] || [[ $osname == 'opensuse-tumbleweed' ]];
 
 
 ## ARCH
-elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
+elif [ "$osname" = 'arch' -o 'manjaro' ]; then
   ### Update and Upgrade System
   pacman -Syu --noconfirm >> $log
   
   ### Clean Orphans
-  if [[ $cleanup == 'true' ]]; then
+  if [ "$cleanup" = 'true' ]; then
     echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
     pacman -Rns $(pacman -Qtdq) --noconfirm >> $log
   else
@@ -123,7 +129,36 @@ elif [[ $osname == 'arch' ]] || [[ $osname == 'manjaro' ]]; then
   RUNNING_KERNEL=$(uname -r)
 
   ### Compares Running Kernel Against Installed Kernel
-  if [[ INSTALLED_KERNEL != RUNNING_KERNEL ]]; then
+  if [ $INSTALLED_KERNEL != $RUNNING_KERNEL ]; then
+    echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
+    echo [$(date +%T)] Kernel Changed From $RUNNING_KERNEL to $INSTALLED_KERNEL! >> $log 
+    reboot_needed='true'
+  else 
+    echo [$(date +%T)] The System Does Not Require a Reboot. >> $log 
+    reboot_needed='false'
+  fi
+
+
+## FreeBSD
+elif [ "$osname" = 'freebsd' ]; then
+  ### Update and Upgrade System
+  yes | pkg upgrade >> $log
+  
+  ### Clean Orphans
+  if [ "$cleanup" = 'true' ]; then
+    echo [$(date +%T)] Starting System Package Maintaince and Cleanup... >> $log 
+    yes | pkg autoremove >> $log
+  else
+    echo [$(date +%T)] Package Cleanup Is Disabled By /etc/auto-patcher/config! >> $log
+  fi
+  
+  ### Checks Kernel Version in /boot
+  INSTALLED_KERNEL=$(freebsd-version -k) 
+  ### Fetch Running Kernel
+  RUNNING_KERNEL=$(uname -r)
+
+  ### Compares Running Kernel Against Installed Kernel
+  if [ $INSTALLED_KERNEL != $RUNNING_KERNEL ]; then
     echo [$(date +%T)] The System Needs to Be Rebooted! >> $log 
     echo [$(date +%T)] Kernel Changed From $RUNNING_KERNEL to $INSTALLED_KERNEL! >> $log 
     reboot_needed='true'
@@ -148,6 +183,7 @@ if [ -n "$post_transaction" ]; then
   echo [$(date +%T)] Started Running Custom Post-Transaction Script. >> $log 
   $post_transaction
   echo [$(date +%T)] Finished Running Custom Post-Transaction Script. >> $log 
+
 else 
   echo [$(date +%T)] No Post-Transaction Command Defined. >> $log 
 fi
@@ -157,14 +193,14 @@ fi
 # Decide If Reboot Should Be Scheduled
 #######################################
 
-if [[ $disable_reboot == 'true' ]]; then
+if [ "$disable_reboot" = 'true' ]; then
   echo [$(date +%T)] Reboot Has Been Disabled By /etc/auto-patcher/config! >> $log
 
-elif [[ $force_reboot == 'true' ]]; then
+elif [ "$force_reboot" = 'true' ]; then
   echo [$(date +%T)] Reboot is Being Forced By /etc/auto-patcher/config! >> $log
   shutdown -r $reboot_time >> $log
 
-elif [[ $reboot_needed == 'true' ]]; then
+elif [ "$reboot_needed" = 'true' ]; then
   echo [$(date +%T)] Reboot is Required and Will Be Scheduled At $reboot_time >> $log
   shutdown -r $reboot_time >> $log
 fi
