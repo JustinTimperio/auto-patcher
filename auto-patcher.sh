@@ -35,7 +35,9 @@ else
 fi
 
 
+#############################
 ## DEBIAN
+#############################
 if [ "$osname" = 'ubuntu' -o 'debian' ]; then
   ### Update System
   apt update --yes >> $log
@@ -60,7 +62,9 @@ if [ "$osname" = 'ubuntu' -o 'debian' ]; then
   fi
 
 
+#############################
 ## RHL
+#############################
 elif [ "$osname" = 'centos' -o 'fedora' ]; then
   ### Update and Upgrade System
   yum -y upgrade >> $log
@@ -84,7 +88,9 @@ elif [ "$osname" = 'centos' -o 'fedora' ]; then
   fi
 
 
+#############################
 ## OpenSUSE
+#############################
 elif [ "$osname" = 'opensuse-leap' -o 'opensuse-tumbleweed' ]; then
   ### Update and Upgrade System
   zypper -n refresh  >> $log
@@ -109,8 +115,9 @@ elif [ "$osname" = 'opensuse-leap' -o 'opensuse-tumbleweed' ]; then
     reboot_needed='false'
   fi
 
-
+#############################
 ## ARCH
+#############################
 elif [ "$osname" = 'arch' -o 'manjaro' ]; then
   ### Update and Upgrade System
   pacman -Syu --noconfirm >> $log
@@ -139,7 +146,9 @@ elif [ "$osname" = 'arch' -o 'manjaro' ]; then
   fi
 
 
+#############################
 ## FreeBSD
+#############################
 elif [ "$osname" = 'freebsd' ]; then
   ### Update and Upgrade System
   yes | pkg upgrade >> $log

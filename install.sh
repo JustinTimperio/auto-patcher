@@ -1,6 +1,7 @@
 #! /usr/bin/env sh
 
 # Clone Repo
+rm -rf /opt/auto-patcher
 git clone https://github.com/JustinTimperio/auto-patcher.git /opt/auto-patcher
 
 # Add Config to /etc
@@ -8,7 +9,7 @@ mkdir -p /etc/auto-patcher
 cp /opt/auto-patcher/config /etc/auto-patcher/config
 
 if [ "$(uname)" = 'FreeBSD' ]; then
-  echo ''
+  echo 'This is NOT done yet'
 
 else
   # Add Service Unit Files

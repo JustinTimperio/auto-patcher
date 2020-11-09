@@ -12,11 +12,12 @@ A shell script and systemd service that automatically runs package upgrades, cle
 - OpenSUSE Tumbleweed
 - Arch
 - Manjaro
+- FreeBSD
 
 ------------
 
 ### Install Auto-Patcher
-`curl https://raw.githubusercontent.com/JustinTimperio/auto-patcher/master/install.sh | sudo bash`
+`curl https://raw.githubusercontent.com/JustinTimperio/auto-patcher/master/install.sh | sudo sh`
 
 ### Uninstall Auto-Patcher
 `sudo /opt/auto-patcher/remove.sh`

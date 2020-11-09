@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /usr/bin/env sh
 
 ## Defines a Log File
 log='/var/log/auto-patcher.log'
@@ -24,6 +24,4 @@ force_reboot='false'
 disable_reboot='true'
 
 ## Schedules A Reboot One Min After Script Finishes
-reboot_time=$(date --date='1 minute' +%H:%M)
-## Can Also Be Set To a Spesific Time
-#reboot_time='00:00'
+reboot_offset='1'
