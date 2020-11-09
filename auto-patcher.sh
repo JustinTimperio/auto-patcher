@@ -201,7 +201,7 @@ elif [ "$osname" = 'freebsd' ]; then
 ## NOT SUPPORTED
 #############################
 else
-  echo [$(date +%T)] $osname Is Not Supported! >> "$log"
+  echo [$(date +%T)] "$osname" Is Not Supported! >> "$log"
   exit
 fi
 
@@ -229,10 +229,10 @@ if [ "$disable_reboot" = 'true' ]; then
 
 elif [ "$force_reboot" = 'true' ]; then
   echo [$(date +%T)] Reboot is Being Forced By /etc/auto-patcher/config! >> "$log"
-  shutdown -r $reboot_time >> "$log"
+  shutdown -r "$reboot_time" >> "$log"
 
 elif [ "$reboot_needed" = 'true' ]; then
-  echo [$(date +%T)] Reboot is Required and Will Be Scheduled At $reboot_time >> "$log"
+  echo [$(date +%T)] Reboot is Required and Will Be Scheduled "$reboot_time" Mins in the Future >> "$log"
   shutdown -r +"$reboot_offset" 'Auto-Patcher Has Scheduled a Reboot After a System Upgrade' >> "$log"
 fi
 
