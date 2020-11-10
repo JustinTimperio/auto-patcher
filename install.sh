@@ -9,7 +9,9 @@ mkdir -p /etc/auto-patcher
 cp /opt/auto-patcher/config /etc/auto-patcher/config
 
 if [ "$(uname)" = 'FreeBSD' ]; then
-  echo 'This is NOT done yet'
+  croncmd="/opt/auto-patcher/auto-patcher.sh"
+  cronjob="0 0 * * 1 $croncmd"
+  ( crontab -l | grep -v -F "$croncmd" || : ; echo "$cronjob" ) | crontab -
 
 else
   # Add Service Unit Files

@@ -6,7 +6,9 @@ rm -R /etc/auto-patcher
 rm /var/log/auto-patcher.log
 
 if [ "$(uname)" = 'FreeBSD' ]; then
-  echo 'This is NOT done yet'
+  croncmd="/opt/auto-patcher/auto-patcher.sh"
+  cronjob="0 0 * * 1 $croncmd"
+  ( crontab -l | grep -v -F "$croncmd" ) | crontab -
 
 else
   # Disable and Remove Service Unit
